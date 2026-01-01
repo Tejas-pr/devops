@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: backend-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: nginx
@@ -14,22 +14,14 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: nginx:1.25-alpine
-          imagePullPolicy: IfNotPresent
+          image: nginx
           ports:
             - containerPort: 80
-          resources:
-            requests:
-              cpu: "50m"
-              memory: "64Mi"
-            limits:
-              cpu: "100m"
-              memory: "128Mi"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-service
+  name: backend-service
 spec:
   selector:
     app: nginx
@@ -37,4 +29,4 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: LoadBalancer
+  type: ClusterIP
